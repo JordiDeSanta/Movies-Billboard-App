@@ -13,14 +13,14 @@ class CardSwiperWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(top: 30.0),
       child: Swiper(
-        itemCount: 5,
+        itemCount: movies.length,
         itemWidth: _screenSize.width * 0.85,
         itemHeight: _screenSize.height * 0.5,
         layout: SwiperLayout.STACK,
         itemBuilder: (context, index) {
           final _movieTemp = movies[index];
-          return Card(
-            shape: RoundedRectangleBorder(),
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
             child: Image.network(
               'https://picsum.photos/1280/720/?image=$_movieTemp',
               fit: BoxFit.cover,
