@@ -16,10 +16,15 @@ class HomePage extends StatelessWidget {
         body: Container(
           child: Column(
             children: [
-              SizedBox(height: 20),
-              CardSwiperWidget(),
+              _swiperCreator(),
             ],
           ),
         ));
   }
+}
+
+Widget _swiperCreator() {
+  return CardSwiperWidget(
+    movies: [11, 22, 33, 44, 55],
+  );
 }
