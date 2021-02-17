@@ -8,12 +8,14 @@ class CardSwiperWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _screenSize = MediaQuery.of(context).size;
+
     return Container(
       padding: EdgeInsets.only(top: 30.0),
       child: Swiper(
         itemCount: 5,
-        itemWidth: 300.0,
-        itemHeight: 300.0,
+        itemWidth: _screenSize.width * 0.85,
+        itemHeight: _screenSize.height * 0.5,
         layout: SwiperLayout.STACK,
         itemBuilder: (context, index) {
           final _movieTemp = movies[index];
