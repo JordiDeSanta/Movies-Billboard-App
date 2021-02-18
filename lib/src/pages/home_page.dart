@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
 
   Widget _swiperCreator() {
     return FutureBuilder(
-      future: moviesProvider.getPopular(),
+      future: moviesProvider.getNowPlaying(),
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.hasData) {
           return CardSwiperWidget(movies: snapshot.data);
@@ -49,17 +49,13 @@ class HomePage extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          Text(
-            'Popular',
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          /*FutureBuilder(
-            future: moviesProvider.,
-            initialData: InitialData,
+          FutureBuilder(
+            future: moviesProvider.getPopular(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return ;
+              snapshot.data.forEach((p) => print(p.title));
+              return Container();
             },
-          ),*/
+          ),
         ],
       ),
     );

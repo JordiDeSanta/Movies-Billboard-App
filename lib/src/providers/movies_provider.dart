@@ -5,10 +5,10 @@ import 'dart:convert';
 class MoviesProvider {
   String _apiKey = '3fa4d3acdcb3691743e982acc21c96c6';
   String _url = 'api.themoviedb.org';
-  String _lang = 'es_ES';
+  String _lang = 'en_US';
 
-  Future<List<Movie>> getInBillboard() async {
-    final url = Uri.https(_url, '/3/movie/now_playing', {
+  Future<List<Movie>> getSomeWithPath(String path) async {
+    final url = Uri.https(_url, path, {
       'api_key': _apiKey,
       'language': _lang,
     });
@@ -22,16 +22,10 @@ class MoviesProvider {
   }
 
   Future<List<Movie>> getPopular() async {
-    final url = Uri.https(_url, '3/movie/popular', {
-      'api_key': _apiKey,
-      'language': _lang,
-    });
+    return getSomeWithPath('3/movie/popular');
+  }
 
-    final response = await http.get(url);
-    final decodedData = json.decode(response.body);
-
-    final movies = new Movies.fromJsonList(decodedData['results']);
-
-    return movies.items;
+  Future<List<Movie>> getNowPlaying() async {
+    return getSomeWithPath('3/movie/now_playing');
   }
 }
