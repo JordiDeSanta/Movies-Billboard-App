@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _swiperCreator(),
+              SizedBox(height: 35.0),
               _footer(context),
             ],
           ),
@@ -49,26 +50,20 @@ class HomePage extends StatelessWidget {
     return Container(
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+            child: Text('Famous Movies',
+                style: Theme.of(context).textTheme.bodyText1),
+          ),
           FutureBuilder(
             future: moviesProvider.getPopular(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10.0, left: 15.0),
-                      child: Text(
-                        'Famous Movies',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    MovieHorizontal(movies: snapshot.data),
-                  ],
-                );
+                return MovieHorizontal(movies: snapshot.data);
               } else {
-                return Container();
+                return Container(child: CircularProgressIndicator());
               }
             },
           ),

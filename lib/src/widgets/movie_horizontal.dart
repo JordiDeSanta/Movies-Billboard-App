@@ -11,7 +11,7 @@ class MovieHorizontal extends StatelessWidget {
     final _screenSize = MediaQuery.of(context).size;
 
     return Container(
-      height: _screenSize.height * 0.2,
+      height: _screenSize.height * 0.21,
       child: PageView(
         controller: PageController(
           initialPage: 1,
@@ -25,7 +25,7 @@ class MovieHorizontal extends StatelessWidget {
   List<Widget> _cards(BuildContext context, Size screenSize) {
     return movies.map((movie) {
       return Container(
-        margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
+        margin: EdgeInsets.only(right: 10.0),
         child: Column(
           children: [
             ClipRRect(
@@ -34,10 +34,11 @@ class MovieHorizontal extends StatelessWidget {
                 placeholder: AssetImage("assets/img/loading.gif"),
                 image: NetworkImage(movie.getPosterImage()),
                 fit: BoxFit.cover,
-                width: screenSize.width * 0.3,
                 height: screenSize.height * 0.186,
+                width: screenSize.width * 0.3,
               ),
             ),
+            Text('example'),
           ],
         ),
       );
