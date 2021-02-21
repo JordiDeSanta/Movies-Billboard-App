@@ -17,13 +17,12 @@ class MovieHorizontal extends StatelessWidget {
           initialPage: 1,
           viewportFraction: 0.3,
         ),
-        children: _cards(),
+        children: _cards(context, _screenSize),
       ),
     );
   }
 
-  List<Widget> _cards(BuildContext contex) {
-    final _screenSize = MediaQuery.of(context).size;
+  List<Widget> _cards(BuildContext context, Size screenSize) {
     return movies.map((movie) {
       return Container(
         margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
@@ -35,7 +34,8 @@ class MovieHorizontal extends StatelessWidget {
                 placeholder: AssetImage("assets/img/loading.gif"),
                 image: NetworkImage(movie.getPosterImage()),
                 fit: BoxFit.cover,
-                height: 130.0,
+                width: screenSize.width * 0.3,
+                height: screenSize.height * 0.186,
               ),
             ),
           ],
