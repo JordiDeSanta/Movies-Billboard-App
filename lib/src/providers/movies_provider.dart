@@ -1,18 +1,29 @@
-import 'package:movie_billboard/src/models/movie_model.dart';
+import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:movie_billboard/src/models/movie_model.dart';
 
 class MoviesProvider {
   String _apiKey = '3fa4d3acdcb3691743e982acc21c96c6';
   String _url = 'api.themoviedb.org';
   String _lang = 'en_US';
 
-  Future<List<Movie>> getSomeWithPath(String path) async {
-    final url = Uri.https(_url, path, {
-      'api_key': _apiKey,
-      'language': _lang,
-    });
+  int _popularPage = 0;
 
+  List<Movie> _populars = new List();
+
+  final _popularsStreamController = StreamController<List<Movie>>.broadcast();
+
+  Function(List<Movie>) get popularsSink => _popularsStreamController.sink.add;
+
+  Stream<List<Movie>> get popularsStream => _popularsStreamController.stream;
+
+  void disposeStreams() {
+    _popularsStreamController?.close();
+  }
+
+  Future<List<Movie>> getSomeWithPath(Uri url) async {
     final response = await http.get(url);
     final decodedData = json.decode(response.body);
 
@@ -22,10 +33,30 @@ class MoviesProvider {
   }
 
   Future<List<Movie>> getPopular() async {
-    return getSomeWithPath('3/movie/popular');
+    _popularPage++;
+
+    final url = Uri.https(_url, '3/movie/popular', {
+      'api_key': _apiKey,
+      'language': _lang,
+      'page': _popularPage.toString(),
+    });
+
+    final resp = await getSomeWithPath(url);
+
+    _populars.addAll(resp);
+    popularsSink(_populars);
+
+    return resp;
   }
 
   Future<List<Movie>> getNowPlaying() async {
-    return getSomeWithPath('3/movie/now_playing');
+    final url = Uri.https(_url, '3/movie/now_playing', {
+      'api_key': _apiKey,
+      'language': _lang,
+    });
+
+    final resp = await getSomeWithPath(url);
+
+    return resp;
   }
 }
