@@ -22,15 +22,25 @@ class CardSwiperWidget extends StatelessWidget {
         layout: SwiperLayout.STACK,
         itemBuilder: (context, index) {
           Movie _movieTemp = movies[index];
-          return ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/img/loading.gif'),
-                image: NetworkImage(_movieTemp.getPosterImage()),
-                fit: BoxFit.cover,
-              ));
+          return _card(context, _movieTemp);
         },
       ),
     );
+  }
+
+  Widget _card(BuildContext context, Movie tempMovie) {
+    final movieCard = ClipRRect(
+        borderRadius: BorderRadius.circular(15.0),
+        child: FadeInImage(
+          placeholder: AssetImage('assets/img/loading.gif'),
+          image: NetworkImage(tempMovie.getPosterImage()),
+          fit: BoxFit.cover,
+        ));
+
+    return GestureDetector(
+        child: movieCard,
+        onTap: () {
+          Navigator.pushNamed(context, 'details', arguments: tempMovie);
+        });
   }
 }
