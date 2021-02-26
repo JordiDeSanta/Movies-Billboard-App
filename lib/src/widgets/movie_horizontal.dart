@@ -24,37 +24,36 @@ class MovieHorizontal extends StatelessWidget {
 
     return Container(
       height: _screenSize.height * 0.21,
-      child: PageView(
+      child: PageView.builder(
         controller: _pageController,
-        children: _cards(context, _screenSize),
+        itemCount: movies.length,
+        itemBuilder: (context, i) => _card(context, _screenSize, movies[i]),
       ),
     );
   }
 
-  List<Widget> _cards(BuildContext context, Size screenSize) {
-    return movies.map((movie) {
-      return Container(
-        margin: EdgeInsets.only(right: 10.0),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: FadeInImage(
-                placeholder: AssetImage("assets/img/loading.gif"),
-                image: NetworkImage(movie.getPosterImage()),
-                fit: BoxFit.cover,
-                height: screenSize.height * 0.186,
-                width: screenSize.width * 0.3,
-              ),
+  Widget _card(BuildContext context, Size screenSize, Movie movie) {
+    return Container(
+      margin: EdgeInsets.only(right: 10.0),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: FadeInImage(
+              placeholder: AssetImage("assets/img/loading.gif"),
+              image: NetworkImage(movie.getPosterImage()),
+              fit: BoxFit.cover,
+              height: screenSize.height * 0.186,
+              width: screenSize.width * 0.3,
             ),
-            Text(
-              movie.title,
-              style: Theme.of(context).textTheme.caption,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      );
-    }).toList();
+          ),
+          Text(
+            movie.title,
+            style: Theme.of(context).textTheme.caption,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
   }
 }
