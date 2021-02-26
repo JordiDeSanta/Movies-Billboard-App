@@ -33,7 +33,7 @@ class MovieHorizontal extends StatelessWidget {
   }
 
   Widget _card(BuildContext context, Size screenSize, Movie movie) {
-    return Container(
+    final movieCard = Container(
       margin: EdgeInsets.only(right: 10.0),
       child: Column(
         children: [
@@ -54,6 +54,13 @@ class MovieHorizontal extends StatelessWidget {
           ),
         ],
       ),
+    );
+
+    return GestureDetector(
+      child: movieCard,
+      onTap: () {
+        Navigator.pushNamed(context, 'details', arguments: movie);
+      },
     );
   }
 }
