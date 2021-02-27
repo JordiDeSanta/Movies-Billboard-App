@@ -12,12 +12,16 @@ class HomePage extends StatelessWidget {
     moviesProvider.getPopular();
 
     return Scaffold(
-        appBar: AppBar(title: Text('Cine Movies'), actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ]),
+        appBar: AppBar(
+          title: Text('Cine Movies'),
+          backgroundColor: Colors.deepOrange,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {},
+            ),
+          ],
+        ),
         body: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
