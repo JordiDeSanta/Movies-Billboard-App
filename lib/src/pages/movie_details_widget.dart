@@ -14,7 +14,8 @@ class MovieDetails extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _printMovie(movie),
+                _printMovie(context, movie),
+                _printDescription(context, movie),
               ],
             ),
           ),
@@ -32,10 +33,6 @@ class MovieDetails extends StatelessWidget {
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        title: Text(
-          m.title,
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
         background: FadeInImage(
           placeholder: AssetImage('assets/img/loading.gif'),
           image: NetworkImage(m.getBgImage()),
@@ -45,9 +42,20 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Widget _printMovie(Movie m) {
+  Widget _printDescription(BuildContext context, Movie m) {
     return Container(
-      padding: EdgeInsets.only(left: 10, top: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Text(
+        m.overview,
+        style: Theme.of(context).textTheme.bodyText1,
+        textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _printMovie(BuildContext context, Movie m) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
           ClipRRect(
@@ -63,7 +71,18 @@ class MovieDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(m.title),
+                Text(
+                  m.title,
+                  style: Theme.of(context).textTheme.headline6,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.star_border),
+                    Text(m.voteAverage.toString()),
+                    Text('  (' + m.voteCount.toString() + ')  '),
+                  ],
+                )
               ],
             ),
           )
