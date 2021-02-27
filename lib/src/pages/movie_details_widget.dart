@@ -11,6 +11,13 @@ class MovieDetails extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           _createAppBar(movie),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                _printMovie(movie),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -34,6 +41,33 @@ class MovieDetails extends StatelessWidget {
           image: NetworkImage(m.getBgImage()),
           fit: BoxFit.cover,
         ),
+      ),
+    );
+  }
+
+  Widget _printMovie(Movie m) {
+    return Container(
+      padding: EdgeInsets.only(left: 10, top: 10),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Image(
+              image: NetworkImage(m.getPosterImage()),
+              height: 150,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 20.0),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(m.title),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
