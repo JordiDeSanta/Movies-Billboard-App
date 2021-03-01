@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:movie_billboard/src/models/actor_model.dart';
 import 'package:movie_billboard/src/models/movie_model.dart';
 
 class MoviesProvider {
@@ -22,6 +23,20 @@ class MoviesProvider {
 
   void disposeStreams() {
     _popularsStreamController?.close();
+  }
+
+  Future<List<Actor>> getCast(String mID) async {
+    final url = Uri.https(_url, '3/movie/$mID/credits', {
+      'api_key': _apiKey,
+      'language': _lang,
+    });
+
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+
+    final cast = new Cast.fromJsonList(decodedData['cast']);
+
+    return cast.actors;
   }
 
   Future<List<Movie>> getSomeWithPath(Uri url) async {
