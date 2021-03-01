@@ -101,7 +101,7 @@ class MovieDetails extends StatelessWidget {
       future: movieProvider.getCast(m.id.toString()),
       builder: (context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          return _createActorsPageView(snapshot.data);
+          return _createActorsPageView(context, snapshot.data);
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -109,7 +109,7 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Widget _createActorsPageView(List<Actor> actors) {
+  Widget _createActorsPageView(BuildContext context, List<Actor> actors) {
     return Container(
       height: 200.0,
       child: PageView.builder(
@@ -120,14 +120,14 @@ class MovieDetails extends StatelessWidget {
         ),
         itemCount: actors.length,
         itemBuilder: (context, i) {
-          return _createActorCard(actors[i]);
+          return _createActorCard(context, actors[i]);
         },
       ),
     );
   }
 
-  Widget _createActorCard(Actor a) {
-    return Container(
+  Widget _createActorCard(BuildContext context, Actor a) {
+    final actorCard = Container(
       child: Column(
         children: [
           Expanded(child: SizedBox()),
@@ -146,6 +146,13 @@ class MovieDetails extends StatelessWidget {
           ),
         ],
       ),
+    );
+
+    return GestureDetector(
+      child: actorCard,
+      onTap: () {
+        Navigator.pushNamed(context, 'actor', arguments: a);
+      },
     );
   }
 }
