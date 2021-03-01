@@ -18,7 +18,6 @@ class MovieDetails extends StatelessWidget {
               [
                 _printMovie(context, movie),
                 _printDescription(context, movie),
-                SizedBox(height: 80),
                 _createCasting(movie),
               ],
             ),
@@ -131,6 +130,7 @@ class MovieDetails extends StatelessWidget {
     return Container(
       child: Column(
         children: [
+          Expanded(child: SizedBox()),
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
