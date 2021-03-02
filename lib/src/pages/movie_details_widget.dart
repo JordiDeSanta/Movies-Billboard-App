@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_billboard/src/models/actor_model.dart';
 import 'package:movie_billboard/src/models/movie_model.dart';
 import 'package:movie_billboard/src/providers/movies_provider.dart';
-import 'package:movie_billboard/src/widgets/card_swiper_widget.dart';
+import 'package:movie_billboard/src/widgets/movie_horizontal.dart';
 
 class MovieDetails extends StatelessWidget {
+  final moviesProvider = new MoviesProvider();
+
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context).settings.arguments;
@@ -20,7 +22,7 @@ class MovieDetails extends StatelessWidget {
                 _printMovie(context, movie),
                 _printDescription(context, movie),
                 _createCasting(movie),
-                _createSimilarsList(movie),
+                _createSimilarsList(context, movie),
               ],
             ),
           ),
@@ -97,10 +99,8 @@ class MovieDetails extends StatelessWidget {
   }
 
   Widget _createCasting(Movie m) {
-    final movieProvider = new MoviesProvider();
-
     return FutureBuilder(
-      future: movieProvider.getCast(m.id.toString()),
+      future: moviesProvider.getCast(m.id.toString()),
       builder: (context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
           return _createActorsPageView(context, snapshot.data);
@@ -113,17 +113,29 @@ class MovieDetails extends StatelessWidget {
 
   Widget _createActorsPageView(BuildContext context, List<Actor> actors) {
     return Container(
-      height: 200.0,
-      child: PageView.builder(
-        pageSnapping: false,
-        controller: PageController(
-          viewportFraction: 0.3,
-          initialPage: 1,
-        ),
-        itemCount: actors.length,
-        itemBuilder: (context, i) {
-          return _createActorCard(context, actors[i]);
-        },
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+            child: Text('Cast', style: Theme.of(context).textTheme.bodyText1),
+          ),
+          Container(
+            height: 200.0,
+            child: PageView.builder(
+              pageSnapping: false,
+              controller: PageController(
+                viewportFraction: 0.3,
+                initialPage: 1,
+              ),
+              itemCount: actors.length,
+              itemBuilder: (context, i) {
+                return _createActorCard(context, actors[i]);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -132,7 +144,6 @@ class MovieDetails extends StatelessWidget {
     final actorCard = Container(
       child: Column(
         children: [
-          Expanded(child: SizedBox()),
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
@@ -145,6 +156,7 @@ class MovieDetails extends StatelessWidget {
           Text(
             a.name,
             overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.caption,
           ),
         ],
       ),
@@ -158,18 +170,30 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Widget _createSimilarsList(Movie m) {
-    final movieProvider = new MoviesProvider();
-
-    return FutureBuilder(
-      future: movieProvider.getSimilars(m.id.toString()),
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.hasData) {
-          return CardSwiperWidget(movies: snapshot.data);
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
+  Widget _createSimilarsList(BuildContext context, Movie m) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          Container(
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+            child: Text('Similar Movies',
+                style: Theme.of(context).textTheme.bodyText1),
+          ),
+          FutureBuilder(
+            future: moviesProvider.getSimilars(m.id.toString()),
+            builder: (context, AsyncSnapshot<List> snapshot) {
+              if (snapshot.hasData) {
+                return MovieHorizontal(movies: snapshot.data, nextPage: null);
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

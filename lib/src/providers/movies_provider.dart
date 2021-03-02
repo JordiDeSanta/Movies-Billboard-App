@@ -11,15 +11,13 @@ class MoviesProvider {
   String _url = 'api.themoviedb.org';
   String _lang = 'en_US';
 
+  // Popular Stream
   int _popularPage = 0;
-  bool bIsLoading = false;
-
+  bool bPopularIsLoading = false;
   List<Movie> _populars = new List();
 
   final _popularsStreamController = StreamController<List<Movie>>.broadcast();
-
   Function(List<Movie>) get popularsSink => _popularsStreamController.sink.add;
-
   Stream<List<Movie>> get popularsStream => _popularsStreamController.stream;
 
   void disposeStreams() {
@@ -56,15 +54,17 @@ class MoviesProvider {
       'page': '1',
     });
 
-    return getSomeWithPath(url);
+    final resp = await getSomeWithPath(url);
+
+    return resp;
   }
 
   Future<List<Movie>> getPopular() async {
-    if (bIsLoading) {
+    if (bPopularIsLoading) {
       return [];
     }
 
-    bIsLoading = true;
+    bPopularIsLoading = true;
     _popularPage++;
 
     final url = Uri.https(_url, '3/movie/popular', {
@@ -78,7 +78,7 @@ class MoviesProvider {
     _populars.addAll(resp);
     popularsSink(_populars);
 
-    bIsLoading = false;
+    bPopularIsLoading = false;
 
     return resp;
   }
