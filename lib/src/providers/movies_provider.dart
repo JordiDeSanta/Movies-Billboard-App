@@ -24,6 +24,13 @@ class MoviesProvider {
     _popularsStreamController?.close();
   }
 
+  Future<List<Movie>> searchMovie(String query) async {
+    final url = Uri.https(_url, '3/search/movie',
+        {'api_key': _apiKey, 'language': _lang, 'query': query});
+
+    return await getSomeWithPath(url);
+  }
+
   Future<List<Actor>> getCast(String mID) async {
     final url = Uri.https(_url, '3/movie/$mID/credits', {
       'api_key': _apiKey,
