@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -46,6 +47,16 @@ class MoviesProvider {
     final movies = new Movies.fromJsonList(decodedData['results']);
 
     return movies.items;
+  }
+
+  Future<List<Movie>> getSimilars(String mID) async {
+    final url = Uri.https(_url, '3/movie/$mID/similar', {
+      'api_key': _apiKey,
+      'language': _lang,
+      'page': '1',
+    });
+
+    return getSomeWithPath(url);
   }
 
   Future<List<Movie>> getPopular() async {

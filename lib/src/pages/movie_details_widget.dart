@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_billboard/src/models/actor_model.dart';
 import 'package:movie_billboard/src/models/movie_model.dart';
 import 'package:movie_billboard/src/providers/movies_provider.dart';
+import 'package:movie_billboard/src/widgets/card_swiper_widget.dart';
 
 class MovieDetails extends StatelessWidget {
   @override
@@ -19,6 +20,7 @@ class MovieDetails extends StatelessWidget {
                 _printMovie(context, movie),
                 _printDescription(context, movie),
                 _createCasting(movie),
+                _createSimilarsList(movie),
               ],
             ),
           ),
@@ -152,6 +154,21 @@ class MovieDetails extends StatelessWidget {
       child: actorCard,
       onTap: () {
         Navigator.pushNamed(context, 'actor', arguments: a);
+      },
+    );
+  }
+
+  Widget _createSimilarsList(Movie m) {
+    final movieProvider = new MoviesProvider();
+
+    return FutureBuilder(
+      future: movieProvider.getSimilars(m.id.toString()),
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.hasData) {
+          return CardSwiperWidget(movies: snapshot.data);
+        } else {
+          return CircularProgressIndicator();
+        }
       },
     );
   }
