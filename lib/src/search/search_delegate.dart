@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 import 'package:movie_billboard/src/models/movie_model.dart';
 import 'package:movie_billboard/src/providers/movies_provider.dart';
 
@@ -75,23 +74,23 @@ class DataSearch extends SearchDelegate {
       future: peliculasProvider.searchMovie(query),
       builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
         if (snapshot.hasData) {
-          final peliculas = snapshot.data;
+          final movies = snapshot.data;
 
           return ListView(
-              children: peliculas.map((pelicula) {
+              children: movies.map((movie) {
             return ListTile(
               leading: FadeInImage(
-                image: NetworkImage(pelicula.getPosterImage()),
-                placeholder: AssetImage('assets/img/no-image.jpg'),
+                image: NetworkImage(movie.getPosterImage()),
+                placeholder: AssetImage('assets/img/loading.gif'),
                 width: 50.0,
                 fit: BoxFit.contain,
               ),
-              title: Text(pelicula.title),
-              subtitle: Text(pelicula.originalTitle),
+              title: Text(movie.title),
+              subtitle: Text(movie.originalTitle),
               onTap: () {
                 close(context, null);
-                pelicula.uniqueId = '';
-                Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+                movie.uniqueId = '';
+                Navigator.pushNamed(context, 'details', arguments: movie);
               },
             );
           }).toList());
