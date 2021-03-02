@@ -14,6 +14,7 @@ class Movies {
 }
 
 class Movie {
+  String uniqueId;
   int voteCount;
   int id;
   bool video;
@@ -71,14 +72,11 @@ class Movie {
     return 'https://image.tmdb.org/t/p/w500/$backdropPath';
   }
 
-    getPosterImage() {
+  getPosterImage() {
     if (posterPath == null) {
       return 'https://www.westernheights.k12.ok.us/wp-content/uploads/2020/01/No-Photo-Available.jpg';
     }
 
     return 'https://image.tmdb.org/t/p/w500/$posterPath';
   }
-
- 
-
 }

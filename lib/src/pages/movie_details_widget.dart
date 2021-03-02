@@ -6,8 +6,6 @@ import 'package:movie_billboard/src/providers/movies_provider.dart';
 import 'package:movie_billboard/src/widgets/movie_horizontal.dart';
 
 class MovieDetails extends StatelessWidget {
-  final moviesProvider = new MoviesProvider();
-
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context).settings.arguments;
@@ -65,12 +63,15 @@ class MovieDetails extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image(
-              image: NetworkImage(m.getPosterImage()),
-              height: 150,
-              fit: BoxFit.cover,
+          Hero(
+            tag: m.uniqueId,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: Image(
+                image: NetworkImage(m.getPosterImage()),
+                height: 150,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SizedBox(width: 20.0),
@@ -99,6 +100,8 @@ class MovieDetails extends StatelessWidget {
   }
 
   Widget _createCasting(Movie m) {
+    final moviesProvider = new MoviesProvider();
+
     return FutureBuilder(
       future: moviesProvider.getCast(m.id.toString()),
       builder: (context, AsyncSnapshot<List> snapshot) {
@@ -171,6 +174,8 @@ class MovieDetails extends StatelessWidget {
   }
 
   Widget _createSimilarsList(BuildContext context, Movie m) {
+    final moviesProvider = new MoviesProvider();
+
     return Container(
       width: double.infinity,
       child: Column(

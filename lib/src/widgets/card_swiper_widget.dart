@@ -22,7 +22,11 @@ class CardSwiperWidget extends StatelessWidget {
         layout: SwiperLayout.STACK,
         itemBuilder: (context, index) {
           Movie _movieTemp = movies[index];
-          return _card(context, _movieTemp);
+          _movieTemp.uniqueId = '${_movieTemp.id}-card';
+          return Hero(
+            tag: _movieTemp.uniqueId,
+            child: _card(context, _movieTemp),
+          );
         },
       ),
     );
