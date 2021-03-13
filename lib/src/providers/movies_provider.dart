@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -50,7 +49,7 @@ class MoviesProvider {
     final decodedData = json.decode(response.body);
 
     final movies = new Movies.fromJsonList(decodedData['results']);
-
+    print(response.body);
     return movies.items;
   }
 
